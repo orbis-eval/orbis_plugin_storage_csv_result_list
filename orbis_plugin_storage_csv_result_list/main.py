@@ -1,17 +1,19 @@
+# -*- coding: utf-8 -*-
+
 """Summary
 """
 import csv
 import os
 
-from orbis import app
-from orbis.libs import files
-from orbis.libs import storage
+from orbis_eval import app
+from orbis_eval.libs import files
+from orbis_eval.libs import storage
 
 
-class CSVResultList(object):
+class Main(object):
 
     def __init__(self, rucksack):
-        super(CSVResultList, self).__init__()
+        super(Main, self).__init__()
         self.rucksack = rucksack
         self.pass_name = self.rucksack.open['config']['file_name'].split(".")[0]
         self.folder = os.path.join(app.paths.output_path, "csv_result_list")
