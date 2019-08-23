@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 __name__ = "orbis_plugin_storage_csv_result_list"
-__version__ = "2.1.1"
+__version__ = "2.2"
 __author__ = "fabod"
 __year__ = "2019"
 __description__ = "The csv_result_list storage plugin for Orbis"
