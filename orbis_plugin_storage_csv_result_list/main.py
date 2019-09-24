@@ -2,12 +2,16 @@
 
 """Summary
 """
+import copy
 import csv
 import os
 
 from orbis_eval import app
 from orbis_eval.libs import files
 from orbis_eval.libs import storage
+
+import logging
+logger = logging.getLogger(__name__)
 
 
 class Main(object):
@@ -21,7 +25,8 @@ class Main(object):
         files.create_folder(self.folder)
 
     def run(self):
-        app.logger.info("Saving results to csv overview")
+        logger.info(">>Saving results to csv overview")
+
         response = {
             'date': files.get_timestamp(),
             'aggregator_name': self.rucksack.open['config']['aggregation']['service']['name'],
@@ -32,20 +37,29 @@ class Main(object):
             'evaluator_name': self.rucksack.open['config']['evaluation']['name'],
             'scorer_name': self.rucksack.open['config']['scoring']['name']
         }
-        for key, value in storage.flatten(self.rucksack.open['results']).items():
+
+        results = copy.deepcopy(self.rucksack.open['results'])
+        del(results['items'])
+
+        for key, value in storage.flatten(results).items():
             response[key] = value
+
         header = [key for key, value in response.items()]
         values = [value for key, value in response.items()]
+
         try:
             with open(self.file_name, 'r', newline='') as csvfile:
-                reader = csv.reader(csvfile, delimiter=',', quotechar="'")
+                reader = csv.reader(csvfile, delimiter=';', quotechar="'")
                 first_row = next(reader)
         except FileNotFoundError:
             first_row = None
+
         # check if not allready csv
         with open(self.file_name, 'a', newline='') as csvfile:
-            writer = csv.writer(csvfile, delimiter=',', quotechar="'")
+            writer = csv.writer(csvfile, delimiter=';', quotechar="'")
             if first_row != header:
                 writer.writerow(header)
+
             writer.writerow(values)
-        app.logger.info("Finished saving results to csv overview")
+
+        logger.info("Finished saving results to csv overview")
