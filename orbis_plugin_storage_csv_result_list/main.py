@@ -6,7 +6,7 @@ import copy
 import csv
 import os
 
-from orbis_eval import app
+from orbis_eval.core import app
 from orbis_eval.libs import files
 from orbis_eval.libs import storage
 
@@ -38,7 +38,9 @@ class Main(object):
             'scorer_name': self.rucksack.open['config']['scoring']['name']
         }
 
-        results = copy.deepcopy(self.rucksack.open['results'])
+        # todo# Somehow deletes results from rucksack...
+        # results = copy.deepcopy(self.rucksack.open['results'])
+        results = copy.copy(self.rucksack.open['results'])
         del(results['items'])
 
         for key, value in storage.flatten(results).items():
