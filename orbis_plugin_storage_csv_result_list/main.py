@@ -4,7 +4,6 @@
 """
 import copy
 import csv
-import os
 
 from orbis_eval.core import app
 from orbis_eval.libs import files
@@ -20,8 +19,8 @@ class Main(object):
         super(Main, self).__init__()
         self.rucksack = rucksack
         self.pass_name = self.rucksack.open['config']['file_name'].split(".")[0]
-        self.folder = os.path.join(app.paths.output_path, "csv_result_list")
-        self.file_name = os.path.join(self.folder, "results.csv")
+        self.folder = app.paths.output_path / "csv_result_list"
+        self.file_name = self.folder / "results.csv"
         files.create_folder(self.folder)
 
     def run(self):
